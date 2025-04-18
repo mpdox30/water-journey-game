@@ -3,12 +3,16 @@ export default class ForestScene extends Phaser.Scene {
     super({ key: 'ForestScene' });
   }
 
+  preload() {
+    this.load.image('forestBg', 'assets/images/forest-bg.png');
+  }
+
   create() {
     // แสดงภาพพื้นหลัง 
-    this.add.image(800, 600, 'forestBg').setDepth(-1);
-     
-    // สร้างพื้นหลังสีเขียวเข้มแทนป่า
-    this.cameras.main.setBackgroundColor('#2e8b57'); // forest green
+    this.add.image(400, 300, 'forestBg').setDepth(-1); // center (800x600)
+
+    // สีพื้นหลัง (สำรอง)
+    this.cameras.main.setBackgroundColor('#2e8b57');
 
     // เมฆ (สี่เหลี่ยมสีขาวลอย)
     this.cloud = this.add.rectangle(0, 100, 100, 40, 0xffffff);
@@ -56,7 +60,4 @@ export default class ForestScene extends Phaser.Scene {
     this.cloud.x += this.cloudSpeed;
     if (this.cloud.x > 800) this.cloud.x = -100;
   }
-}
-  preload() {
-  this.load.image('forestBg', 'assets/images/forest-bg.png');
 }
