@@ -49,11 +49,12 @@ export default class ForestScene extends Phaser.Scene {
 
     this.nextBtn.on('pointerdown', () => {
       if (this.restoreScore >= 30) {
-        this.scene.start('FarmScene'); // ให้แน่ใจว่า scene นี้ถูก import แล้ว
+        this.registry.set('restoreScore', this.restoreScore); // ส่งคะแนนข้ามฉาก
+        this.scene.start('FarmScene');
       } else {
         this.scoreText.setText('คะแนนฟื้นฟูไม่พอ! ต้องอย่างน้อย 30');
       }
-    });
+    });    
   }
 
   update() {
