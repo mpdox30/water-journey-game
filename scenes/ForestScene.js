@@ -58,5 +58,5 @@ export default class ForestScene extends Phaser.Scene {
   }
 }
 preload() {
-  this.load.image('forestBg', 'assets/images/forest-bg.jpg');
+  this.load.image('forestBg', 'assets/images/forest-bg.png');
 }
