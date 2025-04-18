@@ -4,6 +4,9 @@ export default class ForestScene extends Phaser.Scene {
   }
 
   create() {
+    // แสดงภาพพื้นหลัง 
+     this.add.image(800, 600, 'forestBg').setDepth(-1); // center, ด้านหลังทุกอย่าง
+     
     // สร้างพื้นหลังสีเขียวเข้มแทนป่า
     this.cameras.main.setBackgroundColor('#2e8b57'); // forest green
 
@@ -53,4 +56,7 @@ export default class ForestScene extends Phaser.Scene {
     this.cloud.x += this.cloudSpeed;
     if (this.cloud.x > 800) this.cloud.x = -100;
   }
+}
+preload() {
+  this.load.image('forestBg', 'assets/images/forest-bg.jpg');
 }
