@@ -5,7 +5,7 @@ export default class ForestScene extends Phaser.Scene {
 
   create() {
     // แสดงภาพพื้นหลัง 
-     this.add.image(800, 600, 'forestBg').setDepth(-1); // center, ด้านหลังทุกอย่าง
+    this.add.image(400, 300, 'forestBg').setDepth(-1);
      
     // สร้างพื้นหลังสีเขียวเข้มแทนป่า
     this.cameras.main.setBackgroundColor('#2e8b57'); // forest green
