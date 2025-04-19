@@ -1,4 +1,4 @@
-// FarmScene.js พร้อมระบบน้ำไหล
+// FarmScene.js พร้อมระบบน้ำไหล (ปรับแก้ชื่อ tileset ให้ตรงกับใน Tiled)
 export default class FarmScene extends Phaser.Scene {
   constructor() {
     super({ key: 'FarmScene' });
@@ -12,8 +12,17 @@ export default class FarmScene extends Phaser.Scene {
   create() {
     // โหลด tilemap และ layer
     this.map = this.make.tilemap({ key: 'farmmap' });
-    const tileset = this.map.addTilesetImage('farmtiles', 'tiles');
+    const tileset = this.map.addTilesetImage('farmtiles', 'tiles'); // ตรงกับ name ใน farmtiles.tsx
+    if (!tileset) {
+      console.error("❌ ไม่พบ tileset 'farmtiles' จาก 'farmtiles.png'");
+      return;
+    }
+
     this.groundLayer = this.map.createLayer('Ground', tileset, 0, 0);
+    if (!this.groundLayer) {
+      console.error("❌ ไม่พบ Ground layer ใน map");
+      return;
+    }
 
     // สร้างรายการ tile ที่เป็นเส้นน้ำ (index = 3)
     this.waterTiles = [];
@@ -29,8 +38,10 @@ export default class FarmScene extends Phaser.Scene {
     // ให้ tile ต้นน้ำมีน้ำตั้งแต่เริ่มต้น
     this.sourceTiles.forEach(t => {
       const tile = this.groundLayer.getTileAt(t.x, t.y);
-      tile.tint = 0x66ccff; // เปลี่ยนสีเพื่อแสดงว่ามีน้ำ
-      this.getWaterTile(t.x, t.y).hasWater = true;
+      if (tile) {
+        tile.tint = 0x66ccff; // เปลี่ยนสีเพื่อแสดงว่ามีน้ำ
+        this.getWaterTile(t.x, t.y).hasWater = true;
+      }
     });
 
     // เรียกน้ำไหลต่อเนื่องทุกวินาที
@@ -58,10 +69,12 @@ export default class FarmScene extends Phaser.Scene {
         if (below && !below.hasWater) {
           below.hasWater = true;
           const t = this.groundLayer.getTileAt(below.x, below.y);
-          t.tint = 0x66ccff;
-          newFlow.push(below);
+          if (t) {
+            t.tint = 0x66ccff;
+            newFlow.push(below);
+          }
         }
       }
     });
   }
-} 
+}
