@@ -5,6 +5,11 @@ export default class FarmScene extends Phaser.Scene {
 
   preload() {
     this.load.image('farmBg', 'assets/images/farm-bg.png');
+
+    // โหลดภาพไอคอนพืช
+    this.load.image('icon_rice', 'assets/images/crops/rice.png');
+    this.load.image('icon_bean', 'assets/images/crops/bean.png');
+    this.load.image('icon_vege', 'assets/images/crops/vege.png');
   }
 
   create() {
@@ -29,12 +34,17 @@ export default class FarmScene extends Phaser.Scene {
       { crop: null, days: 0, water: 0 }
     ];
     this.plotTexts = [];
+    this.plotSprites = [];
 
     for (let i = 0; i < this.plots.length; i++) {
       const x = 150 + i * 220;
       this.add.rectangle(x, 400, 180, 100, 0x567d46);
       const text = this.add.text(x - 60, 380, `แปลง ${i + 1}: ว่าง`, { fontSize: '14px', fill: '#fff' });
       this.plotTexts.push(text);
+
+      // 🌾 ไอคอนพืชในแต่ละแปลง (ซ่อนไว้ก่อน)
+      const sprite = this.add.image(x, 400, '').setVisible(false).setScale(0.25);
+      this.plotSprites.push(sprite);
     }
 
     // ปุ่มปลูกพืช
@@ -75,12 +85,16 @@ export default class FarmScene extends Phaser.Scene {
         water: waterPerDay
       };
 
+      // แสดงไอคอนพืชในแปลง
+      this.plotSprites[emptyIndex]
+        .setTexture('icon_' + cropType)
+        .setVisible(true);
+
       this.plotTexts[emptyIndex].setText(`แปลง ${emptyIndex + 1}: ${label}`);
     });
   }
 
   advanceDay() {
-    // 🌀 สุ่มสภาพอากาศ
     const rain = Phaser.Math.Between(0, 1);
     const drought = Phaser.Math.Between(0, 10) < 2;
 
@@ -94,7 +108,6 @@ export default class FarmScene extends Phaser.Scene {
       this.weatherText.setText('☀️ อากาศปกติ');
     }
 
-    // 🚜 ดูแลพืชในแปลง
     for (let i = 0; i < this.plots.length; i++) {
       const plot = this.plots[i];
 
@@ -106,6 +119,7 @@ export default class FarmScene extends Phaser.Scene {
           if (plot.days <= 0) {
             this.score += 30;
             this.plotTexts[i].setText(`แปลง ${i + 1}: เก็บเกี่ยวแล้ว!`);
+            this.plotSprites[i].setVisible(false);
             this.plots[i] = { crop: null, days: 0, water: 0 };
           } else {
             this.plotTexts[i].setText(`แปลง ${i + 1}: ${plot.crop}, เหลือ ${plot.days} วัน`);
