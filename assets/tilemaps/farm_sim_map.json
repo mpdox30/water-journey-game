@@ -11,7 +11,14 @@
   "tilesets": [
     {
       "firstgid": 1,
-      "source": "farmtiles.tsx"
+      "name": "farmtiles",
+      "tilewidth": 32,
+      "tileheight": 32,
+      "tilecount": 4,
+      "columns": 4,
+      "image": "assets/tilesets/farmtiles.png",
+      "imagewidth": 128,
+      "imageheight": 32
     }
   ],
   "layers": [
